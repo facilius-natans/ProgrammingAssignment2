@@ -1,31 +1,22 @@
 
 best <- function(state, outcome_name){
   
-column_name <- switch(outcome_name,
+  column_name <- switch(outcome_name,
          "heart attack" = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack",
          "heart failure" = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure",
          "pneumonia" = "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia")
   
-  
   outcome <- read.csv("outcome-of-care-measures.csv",  colClasses = "character")
-  #get columns  "Hospital.Name", "Specified outcome", one of "heart attack", 
-  #"heart failure", or "pneumonia", and "30-day mortality rate for specified outcome"
- 
-   new_outcome <- outcome[, c("Hospital.Name", "State", column_name)]
-   
-   new_outcome <- subset(new_outcome, new_outcome[,"State"] == state)
- 
-    #print(head(new_outcome))
-    
-    col_name_min <- apply(new_outcome, 2, min)
-    # remove column name from outcome
-    unname(col_name_min['Hospital.Name'])
-  #get lowest rate for specified outcome
-}
+  
+  # Select three required columns: Hospital.Name, State, and column name selected based on the outcome_name param
+  new_outcome <- outcome[, c("Hospital.Name", "State", column_name)]
+  
+  # Select specified State
+  new_outcome <- subset(new_outcome, new_outcome[,"State"] == state)
 
-# head(outcome)
-#ncol(outcome)
-#nrow(outcome)
-#names(outcome)
-#outcome[, 11] <- as.numeric(outcome[, 11])
-#hist(outcome[, 11])
+  # Get lowest rate for specified outcome
+  col_name_min <- apply(new_outcome, 2, min)
+  
+  # Remove column name from outcome, and return it
+  unname(col_name_min['Hospital.Name'])
+}
