@@ -41,7 +41,7 @@ rankhospital <- function(state, outcome, num){
   # Select the row corresponding to the found value
   result_row <- subset(input_df, input_df[, column_name] == result)
   # Remove column label
-  result_hospital <- unname(result_row['Hospital.Name'])
+  result_hospital <- unname(result_row[1, 'Hospital.Name'])
   
   
   print(result_hospital)
