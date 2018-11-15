@@ -25,8 +25,10 @@ rankhospital <- function(state, outcome, num){
   
   if (num == "best") {
     result <- min(as.numeric(input_df[, column_name]), na.rm = TRUE)
+    print(result)
   } else if (num == "worst") {
     result <- max(as.numeric(input_df[, column_name]), na.rm = TRUE)
+    print(result)
   } else {
     # Sort by the value specified in the outcome param
     outcome_sort <- sort(as.numeric(input_df[, column_name]))
