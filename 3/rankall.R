@@ -7,25 +7,31 @@
                        old = c("Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack",
                        "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure",
                        "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia"),
-                        new = c("heart attack" , "heart failure" , "pneumonia")
+                        new = c("heart attack" , "heart_failure" , "pneumonia")
                        )
 
             #column_name <- c("heart attack", "heart failure", "pneumonia")
              df$"heart attack" <- as.numeric(as.character(df$"heart attack"))
-             df$"heart failure" <- as.numeric(as.character(df$"heart failure"))
+             df$"heart failure" <- as.numeric(as.character(df$heart_failure))
              df$"pneumonia" <- as.numeric(as.character(df$"pneumonia"))
              
              
              # Select the required columns: Hospital.Name, State, and the column name with desired outcome
   
-            df <- df[, c("Hospital.Name", "State", "heart failure")]
+            df <- df[, c("Hospital.Name", "State", "heart_failure")]
             #print(head(df))
             
-            df_group_by_state <- group_by(df, "State")
-            print(df_group_by_state)
+            # df_group_by_state <- group_by(df, "State")
+            # print(df_group_by_state)
+            library(dplyr)
+            test <- df %>% 
+              group_by(State) %>%
+              summarize(heart_failure = min(heart_failure)) %>%
+              arrange((State))
+            print(test)
             
-            h_a_sorted_col <- sort(df_group_by_state[, "heart failure"])
-            print(h_a_sorted_col)
+           # new_df<- lapply(df_group_by_state[order(df_group_by_state$"heart failure")])
+           # print(new_df)
   
   
   # if (num == "best") {
