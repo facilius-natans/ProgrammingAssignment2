@@ -1,9 +1,5 @@
 rankall <- function(outcome, num){
   
-  
-  #read file
-  df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
-  
   # Map argument to column_name
   
   source("outcome_switch.R")
@@ -14,6 +10,9 @@ rankall <- function(outcome, num){
   if (column_name == "NA") {
     return(column_name)
   }
+  
+  #read file
+  df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
   
   # Select the required columns: Hospital.Name, State, and the column name with desired outcome
   
