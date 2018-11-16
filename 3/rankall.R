@@ -33,10 +33,10 @@ rankall <- function(outcome, num = "best") {
       result <- head(state_set, 1)
     }
     else if (num == "worst") {
-      #
+      result <- tail(state_set, 1)
     }
     else {
-      #
+      result <- state_set[num]
     }  
   }
   
