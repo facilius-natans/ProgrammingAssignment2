@@ -16,9 +16,14 @@ rankall <- function(outcome, num){
   
   # Select the required columns: Hospital.Name, State, and the column name with desired outcome
   
-  df <- df[, c("Hospital.Name", "State", df$outcome)]
+  df <- df[, c("Hospital.Name", "State", column_name)]
   
-  return(column_name)
+  # Format NAs
+  
+  df[, column_name] <- gsub("Not Available", "NA", df[, column_name])
+  
+  
+  return(head(df))
   
   library(dplyr)
   if (outcome == "pneumonia") {
