@@ -18,6 +18,9 @@ rankall <- function(outcome, num = "best") {
   # Format NAs
   df[, column_name] <- gsub("Not Available", "NA", df[, column_name])
   
+  # Group data by state
+  list_by_state <- split(df[,c("Hospital.Name")], df$State)
+  
   # Condition based on num
   if (num == "best") {
     #
@@ -29,7 +32,7 @@ rankall <- function(outcome, num = "best") {
     #
   }
   
-  return(head(df))
+  return(length(list_by_state))
   
   library(dplyr)
   if (outcome == "pneumonia") {
