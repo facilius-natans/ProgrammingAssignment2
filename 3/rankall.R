@@ -40,30 +40,12 @@ rankall <- function(outcome, num = "best") {
     }  
   }
   
-  # Condition based on num
-  if (num == "best") {
-    #
-  }
-  else if (num == "worst") {
-    #
-  }
-  else {
-    #
-  }
-  
+  # Use lapply to call rank_hospitals function on each state set,
+  # with the state_set as first argument, and num as the second argument
   result <- lapply(list_by_state, rank_hospitals, num)
+  
+  # Convert list to data frame
   result <- data.frame(hospital = unlist(result), state = names(result), row.names = names(result))
-  
-  return(result)
-  
-  library(dplyr)
-  if (outcome == "pneumonia") {
-    test <- df %>% 
-      group_by(State) %>%
-      summarize(result = min(as.numeric(pneumonia), na.rm = TRUE)) %>%
-      arrange((State))
-    print(test)
-  }
   
 }
 
