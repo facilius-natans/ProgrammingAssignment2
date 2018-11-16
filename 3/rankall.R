@@ -1,27 +1,33 @@
-rankall <- function(outcome, num){
+rankall <- function(outcome, num = "best") {
   
   # Map argument to column_name
-  
   source("outcome_switch.R")
   column_name <- outcome_switch(outcome)
   
   # Error handling
-  
   if (column_name == "NA") {
     return(column_name)
   }
   
-  #read file
+  # Read file
   df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
   
   # Select the required columns: Hospital.Name, State, and the column name with desired outcome
-  
   df <- df[, c("Hospital.Name", "State", column_name)]
   
   # Format NAs
-  
   df[, column_name] <- gsub("Not Available", "NA", df[, column_name])
   
+  # Condition based on num
+  if (num == "best") {
+    #
+  }
+  else if (num == "worst") {
+    #
+  }
+  else {
+    #
+  }
   
   return(head(df))
   
@@ -36,11 +42,6 @@ rankall <- function(outcome, num){
   
 }
 
-            
-            
-            
-            
-            
             
             
             
