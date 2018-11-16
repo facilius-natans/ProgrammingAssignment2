@@ -4,20 +4,14 @@ rankall <- function(outcome, num){
   #read file
   df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
   
-  column_name <-switch(outcome,
-                       "heart attack" = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack",
-                       "heart failure" = "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure",
-                       "pneumonia" = "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia",
-                       "NA")
-  
-  
-  
+  source("outcome_switch.R")
+  column_name <- outcome_switch(outcome)
   
   # Select the required columns: Hospital.Name, State, and the column name with desired outcome
   
   df <- df[, c("Hospital.Name", "State", df$outcome)]
   
-  
+  return(column_name)
   
   library(dplyr)
   if (outcome == "pneumonia") {
