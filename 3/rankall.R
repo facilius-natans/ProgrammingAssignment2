@@ -15,14 +15,14 @@ rankall <- function(outcome, num = "best") {
   # Select the required columns: Hospital.Name, State, and the column name with desired outcome
   df <- df[, c("Hospital.Name", "State", column_name)]
   
-  # Format NAs
-  df[, column_name] <- gsub("Not Available", "NA", df[, column_name])
-  
   # Cast outcome as numeric
   df[, column_name] <- suppressWarnings(as.numeric(df[, column_name]))
   
   # Sort data  by state, outcome, and hospital name
   df <- df[order(df$"State", df[column_name], df$"Hospital.Name", na.last=NA),]
+  
+  # Remove NAs from outcome column
+  df <- df[!is.na(column_name)]
   
   # Group data by state
   list_by_state <- split(df[,c("Hospital.Name")], df$State)
