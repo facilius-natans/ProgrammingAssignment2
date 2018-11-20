@@ -27,6 +27,7 @@ rankhospital <- function(state, outcome, num){
     result <- min(as.numeric(input_df[, column_name]), na.rm = TRUE)
   } else if (num == "worst") {
     result <- max(as.numeric(input_df[, column_name]), na.rm = TRUE)
+    #print(result)
   } else {
     # Sort by the value specified in the outcome param
     outcome_sort <- sort(as.numeric(input_df[, column_name]))
@@ -36,6 +37,7 @@ rankhospital <- function(state, outcome, num){
     }
     # Select the outcome value of the specified rank
     result <- outcome_sort[num]
+    #print(result)
   }
 
   # Select the row corresponding to the found value
@@ -45,5 +47,5 @@ rankhospital <- function(state, outcome, num){
   
   
   print(result_hospital)
-  result_hospital
+  #result_hospital
 }
