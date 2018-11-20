@@ -1,60 +1,71 @@
-#rankall <- function(outcome){
-            
-            #read file
-            df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+rankall <- function(outcome, num = "best") {
+  
+  # Map argument to column_name
+  source("outcome_switch.R")
+  column_name <- outcome_switch(outcome)
+  
+  # Error handling
+  if (column_name == "NA") {
+    return(column_name)
+  }
+  
+  # Read file
+  df <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+  
+  # Select the required columns: Hospital.Name, State, and the column name with desired outcome
+  df <- df[, c("Hospital.Name", "State", column_name)]
+  
+  # Cast outcome as numeric
+  df[, column_name] <- suppressWarnings(as.numeric(df[, column_name]))
+  
+  # Sort data  by state, outcome, and hospital name
+  df <- df[order(df$"State", df[column_name], df$"Hospital.Name", na.last=NA),]
+  
+  # Remove NAs from outcome column
+  df <- df[!is.na(column_name)]
+  
+  # Group data by state
+  list_by_state <- split(df[,c("Hospital.Name")], df$State)
+  
+  # Function to rank hospitals in each state
+  rank_hospitals <- function(state_set, num){
+    if (num == "best") {
+      result <- head(state_set, 1)
+    }
+    else if (num == "worst") {
+      result <- tail(state_set, 1)
+    }
+    else {
+      result <- state_set[num]
+    }  
+  }
+  
+  # Use lapply to call rank_hospitals function on each state set,
+  # with the state_set as first argument, and num as the second argument
+  result <- lapply(list_by_state, rank_hospitals, num)
+  
+  # Convert list to data frame
+  result <- data.frame(hospital = unlist(result), state = names(result), row.names = names(result))
+  
+}
 
-            setnames(df,
-                       old = c("Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack",
-                       "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure",
-                       "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia"),
-                        new = c("heart attack" , "heart_failure" , "pneumonia")
-                       )
-
-            #column_name <- c("heart attack", "heart failure", "pneumonia")
-             df$"heart attack" <- as.numeric(as.character(df$"heart attack"))
-             df$"heart failure" <- as.numeric(as.character(df$heart_failure))
-             df$"pneumonia" <- as.numeric(as.character(df$"pneumonia"))
-             
-             
-             # Select the required columns: Hospital.Name, State, and the column name with desired outcome
-  
-            df <- df[, c("Hospital.Name", "State", "heart_failure")]
-            #print(head(df))
             
-            # df_group_by_state <- group_by(df, "State")
-            # print(df_group_by_state)
-            library(dplyr)
-            test <- df %>% 
-              group_by(State) %>%
-              summarize(heart_failure = min(heart_failure)) %>%
-              arrange((State))
-            print(test)
             
-           # new_df<- lapply(df_group_by_state[order(df_group_by_state$"heart failure")])
-           # print(new_df)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
   
   
-  # if (num == "best") {
-  #   result <- min(as.numeric(input_df[, column_name]), na.rm = TRUE)
-  # } else if (num == "worst") {
-  #   result <- max(as.numeric(input_df[, column_name]), na.rm = TRUE)
-  # } else {
-  #   # Sort by the value specified in the outcome param
-  #   outcome_sort <- sort(as.numeric(input_df[, column_name]))
-  #   # Make sure the row specified in the num param exists
-  #   if (length(outcome_sort) < num) {
-  #     return("NA")
-  #   }
-  #   # Select the outcome value of the specified rank
-  #   result <- outcome_sort[num]
-  # }
-  # 
-  # Select the row corresponding to the found value
-#   result_row <- subset(input_df, input_df[, column_name] == result)
-#   # Remove column label
-#   result_hospital <- unname(result_row[1, 'Hospital.Name'])
-#   
-#   
-#   print(result_hospital)
-#   result_hospital
-# }
